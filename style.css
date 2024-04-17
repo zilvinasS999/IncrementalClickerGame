@@ -146,8 +146,7 @@ img {
 
   .upgrade-btn:hover {
     background-color: #fcdda9;
-    /* transform: translateX(0px);
-    transition: all ease-in-out 0.1s; */
+
     cursor: pointer;
     font-weight: 700;
   }
