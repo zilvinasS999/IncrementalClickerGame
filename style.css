@@ -64,20 +64,13 @@ img {
   margin: 0;
 }
 
-/* .upgrade-btn-container {
-  width: 40em;
-  display: flex;
-  justify-content: end;
-} */
-
 .cost {
   font-size: 1rem;
 }
 
 .upgrade-btn:hover {
   background-color: #fcdda9;
-  /* transform: translateX(-10em);
-  transition: all ease-in-out 0.2s; */
+
   cursor: pointer;
   font-weight: 700;
 }

@@ -7,7 +7,8 @@ let cookiePerSec = 0;
 let intervalSet = false;
 
 const cookieImg = document.querySelector('.cookie-img');
-
+const gameDiv = document.querySelector('.game');
+const msg = document.createElement('h3');
 const pointsCounter = document.querySelector('.points');
 const cookieImgBtn = document.querySelector('.change-cookie');
 const bgBtn = document.querySelector('.change-bg');
@@ -25,6 +26,7 @@ const addPoints = () => {
   pointsCounter.innerText = `${points} cookies`;
 
   localStorage.setItem('getPoints', points);
+  msg.remove();
 };
 
 cookieImg.addEventListener('click', function () {
@@ -34,10 +36,10 @@ cookieImg.addEventListener('click', function () {
 });
 
 const handleImg = () => {
-  if (points >= 10) {
-    points -= 10;
+  if (points >= 20) {
+    points -= 20;
     pointsCounter.innerText = `${points} cookies`;
-
+    localStorage.setItem('getPoints', points);
     if (toggle) {
       cookieImg.style.backgroundImage = "url('./assets/imgs/chip.jpg')";
     } else {
@@ -45,8 +47,12 @@ const handleImg = () => {
         "url('./assets/imgs/chocolate-chip-cookie-16.jpg')";
     }
     toggle = !toggle;
+    msg.remove();
   } else {
     console.log('not enough points');
+    msg.innerText = 'Not enough Cookies!';
+    gameDiv.append(msg);
+    localStorage.setItem('getPoints', points);
   }
 };
 
@@ -61,14 +67,19 @@ const shrinkCookie = () => {
 };
 
 const spinCookie = () => {
-  if (points >= 30) {
-    points -= 30;
+  if (points >= 50) {
+    points -= 50;
     pointsCounter.innerText = `${points} cookies`;
 
     cookieImg.style.animation = 'none';
     cookieImg.offsetHeight;
 
     cookieImg.style.animation = 'spin 2s linear 1';
+    msg.remove();
+  } else {
+    msg.innerText = 'Not enough Cookies!';
+    gameDiv.append(msg);
+    localStorage.setItem('getPoints', points);
   }
 };
 
@@ -77,10 +88,15 @@ spinBtn.addEventListener('click', function () {
 });
 
 const addPoint = () => {
-  if (points >= 5) {
-    points -= 5;
+  if (points >= 100) {
+    points -= 100;
     pointsCounter.innerText = `${points} cookies`;
     pointsPerClick += 1;
+    msg.remove();
+  } else {
+    msg.innerText = 'Not enough Cookies!';
+    gameDiv.append(msg);
+    localStorage.setItem('getPoints', points);
   }
 };
 
@@ -89,11 +105,16 @@ addPointBtn.addEventListener('click', function () {
 });
 
 const addFive = () => {
-  if (points >= 10) {
-    points -= 10;
+  if (points >= 300) {
+    points -= 300;
     pointsCounter.innerText = `${points} cookies`;
 
     fivePerClick += 5;
+    msg.remove();
+  } else {
+    msg.innerText = 'Not enough Cookies!';
+    gameDiv.append(msg);
+    localStorage.setItem('getPoints', points);
   }
 };
 
@@ -102,11 +123,16 @@ addFiveBtn.addEventListener('click', function () {
 });
 
 const addTen = () => {
-  if (points >= 20) {
-    points -= 20;
+  if (points >= 500) {
+    points -= 500;
     pointsCounter.innerText = `${points} cookies`;
 
     tenPerClick += 10;
+    msg.remove();
+  } else {
+    msg.innerText = 'Not enough Cookies!';
+    gameDiv.append(msg);
+    localStorage.setItem('getPoints', points);
   }
 };
 
@@ -115,12 +141,12 @@ addTenBtn.addEventListener('click', function () {
 });
 
 const cookieEverySec = () => {
-  if (points >= 20) {
-    points -= 20;
+  if (points >= 1000) {
+    points -= 1000;
     cookiePerSec++;
     localStorage.setItem('cookiePerSec', cookiePerSec);
     pointsCounter.innerText = `${points} cookies`;
-
+    msg.remove();
     if (!intervalSet) {
       setInterval(() => {
         points += cookiePerSec;
@@ -130,6 +156,10 @@ const cookieEverySec = () => {
       }, `1000`);
       intervalSet = true;
     }
+  } else {
+    msg.innerText = 'Not enough Cookies!';
+    gameDiv.append(msg);
+    localStorage.setItem('getPoints', points);
   }
 };
 
