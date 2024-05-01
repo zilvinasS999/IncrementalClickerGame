@@ -18,6 +18,8 @@ const addPointBtn = document.querySelector('.add-point');
 const addFiveBtn = document.querySelector('.add-five');
 const addTenBtn = document.querySelector('.add-ten');
 const cookieSec = document.querySelector('.cookie-sec');
+const cookieImgOne = 'assets/imgs/cookiepng1.webp';
+const cookieImgTwo = 'assets/imgs/cookiepng2.jpg';
 
 const addPoints = () => {
   points += pointsPerClick;
@@ -36,23 +38,24 @@ cookieImg.addEventListener('click', function () {
 });
 
 const handleImg = () => {
+  let currentUrl;
   if (points >= 20) {
     points -= 20;
     pointsCounter.innerText = `${points} cookies`;
     localStorage.setItem('getPoints', points);
     if (toggle) {
-      cookieImg.style.backgroundImage = "url('./assets/imgs/chip.jpg')";
+      currentUrl = cookieImgTwo;
     } else {
-      cookieImg.style.backgroundImage =
-        "url('./assets/imgs/chocolate-chip-cookie-16.jpg')";
+      currentUrl = cookieImgOne;
     }
+    cookieImg.style.backgroundImage = `url(${currentUrl})`;
+    localStorage.setItem('currentImg', currentUrl);
     toggle = !toggle;
     msg.remove();
   } else {
     console.log('not enough points');
     msg.innerText = 'Not enough Cookies!';
     gameDiv.append(msg);
-    localStorage.setItem('getPoints', points);
   }
 };
 
@@ -79,7 +82,6 @@ const spinCookie = () => {
   } else {
     msg.innerText = 'Not enough Cookies!';
     gameDiv.append(msg);
-    localStorage.setItem('getPoints', points);
   }
 };
 
@@ -96,7 +98,6 @@ const addPoint = () => {
   } else {
     msg.innerText = 'Not enough Cookies!';
     gameDiv.append(msg);
-    localStorage.setItem('getPoints', points);
   }
 };
 
@@ -114,7 +115,6 @@ const addFive = () => {
   } else {
     msg.innerText = 'Not enough Cookies!';
     gameDiv.append(msg);
-    localStorage.setItem('getPoints', points);
   }
 };
 
@@ -132,7 +132,6 @@ const addTen = () => {
   } else {
     msg.innerText = 'Not enough Cookies!';
     gameDiv.append(msg);
-    localStorage.setItem('getPoints', points);
   }
 };
 
@@ -159,7 +158,6 @@ const cookieEverySec = () => {
   } else {
     msg.innerText = 'Not enough Cookies!';
     gameDiv.append(msg);
-    localStorage.setItem('getPoints', points);
   }
 };
 
@@ -171,6 +169,7 @@ cookieSec.addEventListener('click', function () {
 document.addEventListener('DOMContentLoaded', (event) => {
   const savedPoints = localStorage.getItem('getPoints');
   const savedInterval = localStorage.getItem('cookiePerSec');
+  const savedImg = localStorage.getItem('currentImg');
 
   if (savedPoints) {
     points = parseInt(savedPoints, 10);
@@ -186,5 +185,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
       }, 1000);
       intervalSet = true;
     }
+  }
+  if (savedImg) {
+    cookieImg.style.backgroundImage = `url(${savedImg})`;
   }
 });
