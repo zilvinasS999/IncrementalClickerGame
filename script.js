@@ -9,6 +9,7 @@ let intervalSet = false;
 const cookieImg = document.querySelector('.cookie-img');
 const gameDiv = document.querySelector('.game');
 const msg = document.createElement('h3');
+const msgContainer = document.querySelector('.message-container');
 const pointsCounter = document.querySelector('.points');
 const cookieImgBtn = document.querySelector('.change-cookie');
 const bgBtn = document.querySelector('.change-bg');
@@ -55,7 +56,7 @@ const handleImg = () => {
   } else {
     console.log('not enough points');
     msg.innerText = 'Not enough Cookies!';
-    gameDiv.append(msg);
+    msgContainer.append(msg);
   }
 };
 
@@ -81,7 +82,7 @@ const spinCookie = () => {
     msg.remove();
   } else {
     msg.innerText = 'Not enough Cookies!';
-    gameDiv.append(msg);
+    msgContainer.append(msg);
   }
 };
 
@@ -97,7 +98,7 @@ const addPoint = () => {
     msg.remove();
   } else {
     msg.innerText = 'Not enough Cookies!';
-    gameDiv.append(msg);
+    msgContainer.append(msg);
   }
 };
 
@@ -114,7 +115,7 @@ const addFive = () => {
     msg.remove();
   } else {
     msg.innerText = 'Not enough Cookies!';
-    gameDiv.append(msg);
+    msgContainer.append(msg);
   }
 };
 
@@ -131,7 +132,7 @@ const addTen = () => {
     msg.remove();
   } else {
     msg.innerText = 'Not enough Cookies!';
-    gameDiv.append(msg);
+    msgContainer.append(msg);
   }
 };
 
@@ -157,7 +158,7 @@ const cookieEverySec = () => {
     }
   } else {
     msg.innerText = 'Not enough Cookies!';
-    gameDiv.append(msg);
+    msgContainer.append(msg);
   }
 };
 
