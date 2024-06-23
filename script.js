@@ -1,10 +1,12 @@
 let points = 0;
-let toggle = true;
+
 let pointsPerClick = 1;
 let fivePerClick = 0;
 let tenPerClick = 0;
 let cookiePerSec = 0;
 let intervalSet = false;
+let currentUrl;
+let toggle;
 
 const cookieImg = document.querySelector('.cookie-img');
 const gameDiv = document.querySelector('.game');
@@ -19,8 +21,8 @@ const addPointBtn = document.querySelector('.add-point');
 const addFiveBtn = document.querySelector('.add-five');
 const addTenBtn = document.querySelector('.add-ten');
 const cookieSec = document.querySelector('.cookie-sec');
-const cookieImgOne = 'assets/imgs/cookiepng1.webp';
-const cookieImgTwo = 'assets/imgs/cookiepng2.jpg';
+const cookieImgOne = './assets/imgs/cookiepng1.webp';
+const cookieImgTwo = './assets/imgs/cookiepng2.jpg';
 
 const addPoints = () => {
   points += pointsPerClick;
@@ -29,6 +31,7 @@ const addPoints = () => {
   pointsCounter.innerText = `${points} cookies`;
 
   localStorage.setItem('getPoints', points);
+
   msg.remove();
 };
 
@@ -39,19 +42,24 @@ cookieImg.addEventListener('click', function () {
 });
 
 const handleImg = () => {
-  let currentUrl;
   if (points >= 20) {
     points -= 20;
     pointsCounter.innerText = `${points} cookies`;
     localStorage.setItem('getPoints', points);
-    if (toggle) {
-      currentUrl = cookieImgTwo;
-    } else {
-      currentUrl = cookieImgOne;
-    }
-    cookieImg.style.backgroundImage = `url(${currentUrl})`;
-    localStorage.setItem('currentImg', currentUrl);
     toggle = !toggle;
+
+    localStorage.setItem('toggle', toggle);
+
+    if (toggle) {
+      cookieImg.style.backgroundImage = `url(${cookieImgOne})`;
+      currentUrl = cookieImgOne;
+      localStorage.setItem('currentImg', currentUrl);
+    } else {
+      cookieImg.style.backgroundImage = `url(${cookieImgTwo})`;
+      currentUrl = cookieImgTwo;
+      localStorage.setItem('currentImg', currentUrl);
+    }
+
     msg.remove();
   } else {
     console.log('not enough points');
@@ -65,9 +73,9 @@ cookieImgBtn.addEventListener('click', function () {
 });
 
 const shrinkCookie = () => {
-  cookieImg.style.animation = 'none';
-  cookieImg.offsetHeight;
-  cookieImg.style.animation = 'shrink 0.2s';
+  cookieImg.style.animation = 'none'; // resets animations and let's other animations to trigger if the first didn't finish
+  cookieImg.offsetHeight; // also lets animations to restart
+  cookieImg.style.animation = 'shrink 0.2s'; // triggers the animation from css file
 };
 
 const spinCookie = () => {
@@ -75,10 +83,10 @@ const spinCookie = () => {
     points -= 50;
     pointsCounter.innerText = `${points} cookies`;
 
-    cookieImg.style.animation = 'none';
+    cookieImg.style.animation = 'none'; // clears any existing animations
     cookieImg.offsetHeight;
-
-    cookieImg.style.animation = 'spin 2s linear 1';
+    localStorage.setItem('getPoints', points);
+    cookieImg.style.animation = 'spin 2s linear 1'; // triggers the animation from css file
     msg.remove();
   } else {
     msg.innerText = 'Not enough Cookies!';
@@ -149,12 +157,13 @@ const cookieEverySec = () => {
     msg.remove();
     if (!intervalSet) {
       setInterval(() => {
+        // Interval triggers only if intervalSet if false
         points += cookiePerSec;
         console.log(cookiePerSec);
         pointsCounter.innerText = `${points} cookies`;
         localStorage.setItem('getPoints', points);
       }, `1000`);
-      intervalSet = true;
+      intervalSet = true; // Makes interval set only once
     }
   } else {
     msg.innerText = 'Not enough Cookies!';
@@ -167,18 +176,20 @@ cookieSec.addEventListener('click', function () {
   pointsCounter.innerText = `${points} cookies`;
 });
 
-document.addEventListener('DOMContentLoaded', (event) => {
+document.addEventListener('DOMContentLoaded', () => {
   const savedPoints = localStorage.getItem('getPoints');
   const savedInterval = localStorage.getItem('cookiePerSec');
   const savedImg = localStorage.getItem('currentImg');
+  const savedToggle = localStorage.getItem('toggle');
 
   if (savedPoints) {
-    points = parseInt(savedPoints, 10);
+    points = parseInt(savedPoints, 10); // Convert a stored string to a decimal integer
     pointsCounter.innerText = `${points} cookies`;
   }
   if (savedInterval) {
     cookiePerSec = parseInt(savedInterval, 10);
     if (cookiePerSec > 0 && !intervalSet) {
+      // only runs if the app is reopened to avoid multiple intervals
       setInterval(() => {
         points += cookiePerSec;
         pointsCounter.innerText = `${points} cookies`;
@@ -189,5 +200,13 @@ document.addEventListener('DOMContentLoaded', (event) => {
   }
   if (savedImg) {
     cookieImg.style.backgroundImage = `url(${savedImg})`;
+  }
+  // if (savedToggle) {
+  //   toggle = savedToggle === 'true'; // Converts stored value's(which is always stored as string) value as a boolean
+  // }
+  if (savedToggle) {
+    toggle = JSON.parse(savedToggle); // Unstrings the value which is a boolean
+  } else {
+    toggle = true; // Default value if not set in localStorage
   }
 });
